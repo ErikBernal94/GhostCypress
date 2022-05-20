@@ -77,12 +77,25 @@ context('Actions', () => {
     const btnSettingMember = 'button.gh-btn-action-icon';
     const btnDeleteMember = '.dropdown .red';
     const emailTest = 'emailTest@email.com'
+
+    // Tag 
+    const tagNav = '[href="#/tags/"]';
+    const newTagBtn = '[href="#/tags/new/"]';
+    const tagName = '#tag-name';
+    const expandBtn = '.gh-expandable .gh-btn-expand'; // Twitter 1, Facebook 2
+    const twitterTittle = '#twitter-title';
+    const twitterDescription = '#twitter-description';
+    const facebookTittle = '#og-title';
+    const facebookDescription = '#og-description';
+    const saveBtn = '.gh-btn.gh-btn-primary.gh-btn-icon.ember-view';
+    const tagsList = '.tags-list.gh-list';
   
     // Settings
     const btnUserSettings = 'section .ember-view.ember-basic-dropdown-trigger.pointer';
     const btnSignOut = 'li .user-menu-signout';
   
     // Others
+    let ran = Math.floor(Math.random() * 101);
     const mainLoggedScreenClass = 'gh-nav-body';
     const settings = '[href="#/settings/"]';
     const navigation = '[href="#/settings/navigation/"]';
@@ -90,6 +103,10 @@ context('Actions', () => {
     const site = '[href="#/site/"]';
     const burger = 'ul.nav li';
     const pLoginError = '.main-error'; 
+
+    //Faker
+    const tgName = faker.name.jobArea();
+
   
     const login = (email = userName, password = userPassword) => {
       //Log into the site  
@@ -212,7 +229,6 @@ context('Actions', () => {
       let pseudoData;
       mockaroo.getPseudoData((data)=>{
           pseudoData = data;
-          let ran = Math.floor(Math.random() * 101)
           login(pseudoData[ran].email,pseudoData[ran].password );
           //THEN: should exists error tag
           cy.get(pLoginError).should('be.visible');
@@ -234,7 +250,6 @@ context('Actions', () => {
       //GIVEN: a user visited 'http://localhost:2368/ghost'
         
       //WHEN: the user password does not match
-      let ran = Math.floor(Math.random() * 101)
       login(userName,aPrioriData[ran].password);
       //THEN: should exists error tag
       cy.get(pLoginError).should('be.visible');
@@ -248,6 +263,66 @@ context('Actions', () => {
       login(userName,userPassword);
       //THEN: should be into the site
       cy.get('section').should('have.class', mainLoggedScreenClass);
+    })
+
+
+
+
+
+    //73
+    it('login, crear tag con twitter card que tenga metatítulo de 299 carácteres', () => {
+      // GIVEN: a user visited 'http://localhost:2368/ghost' and login
+      // WHEN: the user creates a tag with Twitter card and the twitter tittle has 299 characters
+      login(userName, userPassword);
+      cy.get(tagNav).click();
+      cy.get(newTagBtn).click();
+      cy.get(tagName).eq(0).type(tgName);
+      const name = tgName;
+      cy.get(expandBtn).eq(1).click();
+      cy.get(twitterTittle).type(aPrioriData[ran].text_299);
+      cy.get(saveBtn).click();
+      cy.wait(1000);
+  
+      // THEN: the tag craeted exists
+      cy.get(tagNav).eq(0).click();
+      cy.get(tagsList).should('contain', name);
+    })
+  
+    //74
+    it('login, crear tag con twitter card que tenga metatítulo de 300 carácteres', () => {
+      // GIVEN: a user visited 'http://localhost:2368/ghost' and login
+      // WHEN: the user creates a tag with Twitter card and the twitter tittle has 300 characters
+      login(userName, userPassword);
+      cy.get(tagNav).click();
+      cy.get(newTagBtn).click();
+      cy.get(tagName).eq(0).type(tgName);
+      const name = tgName;
+      cy.get(expandBtn).eq(1).click();
+      cy.get(twitterTittle).type(aPrioriData[ran].text_300);
+      cy.get(saveBtn).click();
+      cy.wait(1000);
+  
+      // THEN: the tag craeted exists
+      cy.get(tagNav).eq(0).click();
+      cy.get(tagsList).should('contain', name);
+    })
+  
+    //75
+    it('login, crear tag con twitter card que tenga metatítulo de 301 carácteres', () => {
+      // GIVEN: a user visited 'http://localhost:2368/ghost' and login
+      // WHEN: the user creates a tag with Twitter card and the twitter tittle has 301 characters
+      login(userName, userPassword);
+      cy.get(tagNav).click();
+      cy.get(newTagBtn).click();
+      cy.get(tagName).eq(0).type(tgName);
+      const name = tgName;
+      cy.get(expandBtn).eq(1).click();
+      cy.get(twitterTittle).type(aPrioriData[ran].text_301);
+      cy.get(saveBtn).click();
+      cy.wait(1000);
+  
+      // THEN: the could'nt be created
+      cy.contains('Validation error, cannot save tag. Validation failed for twitter_title.');
     })
 
   
