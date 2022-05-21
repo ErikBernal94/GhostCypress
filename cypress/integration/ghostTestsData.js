@@ -7,7 +7,7 @@ context('Actions', () => {
     before(() => {
       cy.visit('http://localhost:2368/ghost')
       login();
-      createPost(textTest);
+      createPost(textTest, textPost);
       cleanPosts()
       createPage()
       cleanPages()
@@ -70,13 +70,19 @@ context('Actions', () => {
     const btnNewMember = '[href="#/members/new/"]';
     const inputName = '[name="name"]';
     const btnSave = 'main button.ember-view';
+    const btnRetry = 'main button.gh-btn-red';
     const memberRow = '.members-list-container-stretch table tr';
     const msjErrorEmail = 'div.error .response';
     const memberData = '.ember-view.gh-list-data';
+    const memberEmail = '#member-email'
     const divMembersEmpty = '.gh-members-empty';
     const btnSettingMember = 'button.gh-btn-action-icon';
     const btnDeleteMember = '.dropdown .red';
     const emailTest = 'emailTest@email.com'
+    const inputLabel = '.ember-power-select-trigger-multiple-input'
+    const selectLabel = '.ember-power-select-option'
+    const response= '.response';
+    const memberNote = '[name="note"]'
   
     // Settings
     const btnUserSettings = 'section .ember-view.ember-basic-dropdown-trigger.pointer';
@@ -104,11 +110,12 @@ context('Actions', () => {
       cy.get(btnSignOut).click();
     }
   
-    const createPost = (text = textTest) => {
+    const createPost = (textTitle, textDescription) => {
       //Create post
       cy.get(btnNewPost).first().click()
-      cy.get(titlePost).type(text)
+      cy.get(titlePost).type(textTitle)
       cy.get(textPost).first().focus()
+      cy.get(textPost).type(textDescription)
       cy.wait(3000)
     }
   
@@ -250,6 +257,1043 @@ context('Actions', () => {
       cy.get('section').should('have.class', mainLoggedScreenClass);
     })
 
+    //8
+    it('crear post sin datos', () => {
+      // GIVEN: a user visited 'http://localhost:2368/ghost' and login
+      login(userName,userPassword);
+
+      // WHEN: the user creates a post and publishes it
+      cy.get(btnNewPost).first().click()
+      cy.get(textPost).first().focus()
+      cy.wait(3000)
+  
+      // THEN: the published post exists
+      //Verify published post
+      cy.get(btnPublishPost).should('not.exist');
+    })
+
+    //9
+    it('login, crear post, solo titulo', () => {
+      
+      // GIVEN: a user visited 'http://localhost:2368/ghost' and login
+      login(userName,userPassword);
+      // WHEN: the user creates a post and publishes it
+      //Create post
+      mockaroo.getPseudoData((pseudoData)=>{
+        cy.wait(3000)
+        cy.get(btnNewPost).first().click()
+        let ran = Math.floor(Math.random() * 101)
+        let title = pseudoData[ran].text_254
+        cy.get(titlePost).type(title)
+        cy.get(textPost).first().focus()
+        cy.wait(3000)
+    
+        //Publish post
+        cy.get(btnPublishPost).click()
+        cy.get(btnModalPublishPost).click()
+        cy.get(btnModalPublishDeleteSurePost).click()
+        cy.wait(1000)
+    
+        //Go back to posts list
+        cy.get(btnBackPost).eq(0).click()
+    
+        // THEN: the published post exists
+        //Verify published post
+        cy.get(listItemPost).first().should('contain', title)
+        cy.get(listItemStatusPost).first().should('contain', 'Published')
+      });  
+      
+    })
+
+    //10
+    it('login, crear post, solo descripción', () => {
+      
+      // GIVEN: a user visited 'http://localhost:2368/ghost' and login
+      login(userName,userPassword);
+      // WHEN: the user creates a post and publishes it
+      //Create post
+      mockaroo.getPseudoData((pseudoData)=>{
+        cy.wait(3000)
+        cy.get(btnNewPost).first().click()
+        let ran = Math.floor(Math.random() * 101)
+        let title = pseudoData[ran].text_254
+        cy.get(textPost).type(title)
+        cy.get(titlePost).first().focus()
+        cy.wait(3000)
+    
+        //Publish post
+        cy.get(btnPublishPost).click()
+        cy.get(btnModalPublishPost).click()
+        cy.get(btnModalPublishDeleteSurePost).click()
+        cy.wait(1000)
+    
+        //Go back to posts list
+        cy.get(btnBackPost).eq(0).click()
+    
+        // THEN: the published post exists
+        //Verify published post
+        cy.get(listItemPost).first().should('contain', title)
+        cy.get(listItemStatusPost).first().should('contain', 'Published')
+      });  
+      
+    })
+
+    //11
+    it('login, crear post, titulo con longitud de 254', () => {
+      
+      // GIVEN: a user visited 'http://localhost:2368/ghost' and login
+      login(userName,userPassword);
+      // WHEN: the user creates a post and publishes it
+      //Create post
+      mockaroo.getPseudoData((pseudoData)=>{
+        cy.wait(3000)
+        cy.get(btnNewPost).first().click()
+        let ran = Math.floor(Math.random() * 101)
+        let title = pseudoData[ran].text_254
+        cy.get(titlePost).type(title)
+        cy.get(textPost).first().focus()
+        cy.wait(3000)
+    
+        //Publish post
+        cy.get(btnPublishPost).click()
+        cy.get(btnModalPublishPost).click()
+        cy.get(btnModalPublishDeleteSurePost).click()
+        cy.wait(1000)
+    
+        //Go back to posts list
+        cy.get(btnBackPost).eq(0).click()
+    
+        // THEN: the published post exists
+        //Verify published post
+        cy.get(listItemPost).first().should('contain', title)
+        cy.get(listItemStatusPost).first().should('contain', 'Published')
+      });
+    })
+
+    //12
+    it('login, crear post, titulo con longitud de 255', () => {
+      
+      // GIVEN: a user visited 'http://localhost:2368/ghost' and login
+      login(userName,userPassword);
+      // WHEN: the user creates a post and publishes it
+      //Create post
+      cy.wait(3000)
+      cy.get(btnNewPost).first().click()
+      let ran = Math.floor(Math.random() * 101)
+      let title = aPrioriData[ran].text_255
+      cy.get(titlePost).type(title)
+      cy.get(textPost).first().focus()
+      cy.wait(3000)
+  
+      //Publish post
+      cy.get(btnPublishPost).click()
+      cy.get(btnModalPublishPost).click()
+      cy.get(btnModalPublishDeleteSurePost).click()
+      cy.wait(1000)
+  
+      //Go back to posts list
+      cy.get(btnBackPost).eq(0).click()
+  
+      // THEN: the published post exists
+      //Verify published post
+      cy.get(listItemPost).first().should('contain', title)
+      cy.get(listItemStatusPost).first().should('contain', 'Published')
+      
+    })
+
+    //13
+    it('login, crear post, titulo con longitud de 256', () => {
+      
+      // GIVEN: a user visited 'http://localhost:2368/ghost' and login
+      login(userName,userPassword);
+      // WHEN: the user creates a post and publishes it
+      //Create post
+      cy.wait(3000)
+      cy.get(btnNewPost).first().click()
+      let ran = Math.floor(Math.random() * 101)
+      let title = aPrioriData[ran].text_256
+      cy.get(titlePost).type(title)
+      cy.get(textPost).first().focus()
+      cy.wait(3000)
+  
+      // THEN: the published post exists
+      //Verify published post
+      cy.get(btnPublishPost).should('not.exist');
+      
+    })
+
+    //14
+    it('login, crear post, titulo con numeros', () => {
+      
+      // GIVEN: a user visited 'http://localhost:2368/ghost' and login
+      login(userName,userPassword);
+      // WHEN: the user creates a post and publishes it
+      //Create post
+      cy.wait(3000)
+      cy.get(btnNewPost).first().click()
+      let ran = Math.floor(Math.random() * 101)
+      let title = faker.random.numeric(6)
+      cy.get(titlePost).type(title)
+      cy.get(textPost).first().focus()
+      cy.wait(3000)
+  
+      //Publish post
+      cy.get(btnPublishPost).click()
+      cy.get(btnModalPublishPost).click()
+      cy.get(btnModalPublishDeleteSurePost).click()
+      cy.wait(1000)
+  
+      //Go back to posts list
+      cy.get(btnBackPost).eq(0).click()
+  
+      // THEN: the published post exists
+      //Verify published post
+      cy.get(listItemPost).first().should('contain', title)
+      cy.get(listItemStatusPost).first().should('contain', 'Published')
+      
+    })
+    
+    //15
+    it('login, crear post, titulo con caracteres especiales', () => {
+      
+      // GIVEN: a user visited 'http://localhost:2368/ghost' and login
+      login(userName,userPassword);
+      // WHEN: the user creates a post and publishes it
+      //Create post
+      cy.wait(3000)
+      cy.get(btnNewPost).first().click()
+      let ran = Math.floor(Math.random() * 101)
+      let title = faker.datatype.string(6)
+      cy.get(titlePost).type(title)
+      cy.get(textPost).first().focus()
+      cy.wait(3000)
+  
+      //Publish post
+      cy.get(btnPublishPost).click()
+      cy.get(btnModalPublishPost).click()
+      cy.get(btnModalPublishDeleteSurePost).click()
+      cy.wait(1000)
+  
+      //Go back to posts list
+      cy.get(btnBackPost).eq(0).click()
+  
+      // THEN: the published post exists
+      //Verify published post
+      cy.get(listItemPost).first().should('contain', title)
+      cy.get(listItemStatusPost).first().should('contain', 'Published')
+      
+    })
+
+    //16
+    it('login, crear post, titulo con alfanumerico', () => {
+      
+      // GIVEN: a user visited 'http://localhost:2368/ghost' and login
+      login(userName,userPassword);
+      // WHEN: the user creates a post and publishes it
+      //Create post
+      cy.wait(3000)
+      cy.get(btnNewPost).first().click()
+      let ran = Math.floor(Math.random() * 101)
+      let title = faker.random.alphaNumeric(6)
+      cy.get(titlePost).type(title)
+      cy.get(textPost).first().focus()
+      cy.wait(3000)
+  
+      //Publish post
+      cy.get(btnPublishPost).click()
+      cy.get(btnModalPublishPost).click()
+      cy.get(btnModalPublishDeleteSurePost).click()
+      cy.wait(1000)
+  
+      //Go back to posts list
+      cy.get(btnBackPost).eq(0).click()
+  
+      // THEN: the published post exists
+      //Verify published post
+      cy.get(listItemPost).first().should('contain', title)
+      cy.get(listItemStatusPost).first().should('contain', 'Published')
+      
+    })
+
+    //17
+    it('login, crear post, descripción con numeros', () => {
+      
+      // GIVEN: a user visited 'http://localhost:2368/ghost' and login
+      login(userName,userPassword);
+      // WHEN: the user creates a post and publishes it
+      //Create post
+      cy.wait(3000)
+      cy.get(btnNewPost).first().click()
+      let description = faker.random.numeric(6)
+      cy.get(textPost).type(description)
+      cy.get(titlePost).first().focus()
+      cy.wait(3000)
+  
+      //Publish post
+      cy.get(btnPublishPost).click()
+      cy.get(btnModalPublishPost).click()
+      cy.get(btnModalPublishDeleteSurePost).click()
+      cy.wait(1000)
+  
+      //Go back to posts list
+      cy.get(btnBackPost).eq(0).click()
+  
+      // THEN: the published post exists
+      //Verify published post
+      cy.get(listItemPost).first().should('contain', '(Untitled)')
+      cy.get(listItemStatusPost).first().should('contain', 'Published')
+      
+    })
+    
+    //18
+    it('login, crear post, descripción con caracteres especiales', () => {
+      
+      // GIVEN: a user visited 'http://localhost:2368/ghost' and login
+      login(userName,userPassword);
+      // WHEN: the user creates a post and publishes it
+      //Create post
+      cy.wait(3000)
+      cy.get(btnNewPost).first().click()
+      let description = faker.datatype.string(6)
+      cy.get(textPost).type(description)
+      cy.get(titlePost).first().focus()
+      cy.wait(3000)
+  
+      //Publish post
+      cy.get(btnPublishPost).click()
+      cy.get(btnModalPublishPost).click()
+      cy.get(btnModalPublishDeleteSurePost).click()
+      cy.wait(1000)
+  
+      //Go back to posts list
+      cy.get(btnBackPost).eq(0).click()
+  
+      // THEN: the published post exists
+      //Verify published post
+      cy.get(listItemPost).first().should('contain', '(Untitled)')
+      cy.get(listItemStatusPost).first().should('contain', 'Published')
+      
+    })
+
+    //19
+    it('login, crear post, descripción con alfanumericos', () => {
+      
+      // GIVEN: a user visited 'http://localhost:2368/ghost' and login
+      login(userName,userPassword);
+      // WHEN: the user creates a post and publishes it
+      //Create post
+      cy.wait(3000)
+      cy.get(btnNewPost).first().click()
+      let description = faker.random.alphaNumeric(6)
+      cy.get(textPost).type(description)
+      cy.get(titlePost).first().focus()
+      cy.wait(3000)
+  
+      //Publish post
+      cy.get(btnPublishPost).click()
+      cy.get(btnModalPublishPost).click()
+      cy.get(btnModalPublishDeleteSurePost).click()
+      cy.wait(1000)
+  
+      //Go back to posts list
+      cy.get(btnBackPost).eq(0).click()
+  
+      // THEN: the published post exists
+      //Verify published post
+      cy.get(listItemPost).first().should('contain', '(Untitled)')
+      cy.get(listItemStatusPost).first().should('contain', 'Published')
+      
+    })
+
+    //20
+    it('crear pagina sin datos', () => {
+      // GIVEN: a user visited 'http://localhost:2368/ghost' and login
+      login(userName,userPassword);
+
+      // WHEN: the user creates a post and publishes it
+      cy.get(btnSectionPage).first().click();
+      cy.get(btnNewPage).first().click()
+      cy.get(textPage).first().focus()
+      cy.wait(3000)
+  
+      // THEN: the published post exists
+      //Verify published post
+      cy.get(btnPublishPage).should('not.exist');
+    })
+
+    //21
+    it('login, crear page, solo titulo', () => {
+      
+      // GIVEN: a user visited 'http://localhost:2368/ghost' and login
+      login(userName,userPassword);
+      // WHEN: the user creates a page and publishes it
+      //Create post
+      mockaroo.getPseudoData((pseudoData)=>{
+        cy.wait(3000)
+        cy.get(btnSectionPage).first().click();
+        cy.get(btnNewPage).first().click()
+        let ran = Math.floor(Math.random() * 101)
+        let title = pseudoData[ran].text_254
+        cy.get(titlePage).type(title)
+        cy.get(textPage).first().focus()
+        cy.wait(3000)
+    
+        //Publish post
+        cy.get(btnPublishPage).click()
+        cy.get(btnModalPublishPage).click()
+        cy.wait(1000)
+    
+        //Go back to posts list
+        cy.get(btnBackPage).eq(0).click()
+    
+        // THEN: the published post exists
+        //Verify published post
+        cy.get(listItemPage).first().should('contain', title)
+        cy.get(listItemStatusPage).first().should('contain', 'Published')
+      });  
+      
+    })
+
+    //22
+    it('login, crear pagina, solo descripción', () => {
+      
+      // GIVEN: a user visited 'http://localhost:2368/ghost' and login
+      login(userName,userPassword);
+      // WHEN: the user creates a post and publishes it
+      //Create post
+      mockaroo.getPseudoData((pseudoData)=>{
+        cy.wait(3000)
+        cy.get(btnSectionPage).first().click();
+        cy.get(btnNewPage).first().click()
+        let ran = Math.floor(Math.random() * 101)
+        let title = pseudoData[ran].text_254
+        cy.get(textPage).type(title)
+        cy.get(titlePage).first().focus()
+        cy.wait(3000)
+    
+        //Publish post
+        cy.get(btnPublishPage).click()
+        cy.get(btnModalPublishPage).click()
+        cy.wait(1000)
+    
+        //Go back to posts list
+        cy.get(btnBackPage).eq(0).click()
+    
+        // THEN: the published post exists
+        //Verify published post
+        cy.get(listItemPage).first().should('contain', title)
+        cy.get(listItemStatusPage).first().should('contain', 'Published')
+      });  
+      
+    })
+
+    //23
+    it('login, crear página, titulo con longitud de 254', () => {
+      
+      // GIVEN: a user visited 'http://localhost:2368/ghost' and login
+      login(userName,userPassword);
+      // WHEN: the user creates a post and publishes it
+      //Create post
+      mockaroo.getPseudoData((pseudoData)=>{
+        cy.wait(3000)
+        cy.get(btnSectionPage).first().click();
+        cy.get(btnNewPage).first().click()
+        let ran = Math.floor(Math.random() * 101)
+        let title = pseudoData[ran].text_254
+        cy.get(titlePage).type(title)
+        cy.get(textPage).first().focus()
+        cy.wait(3000)
+    
+        //Publish post
+        cy.get(btnPublishPage).click()
+        cy.get(btnModalPublishPage).click()
+        cy.wait(1000)
+    
+        //Go back to posts list
+        cy.get(btnBackPage).eq(0).click()
+    
+        // THEN: the published post exists
+        //Verify published post
+        cy.get(listItemPage).first().should('contain', title)
+        cy.get(listItemStatusPage).first().should('contain', 'Published')
+      });
+    })
+
+    //24
+    it('login, crear página, titulo con longitud de 255', () => {
+      
+      // GIVEN: a user visited 'http://localhost:2368/ghost' and login
+      login(userName,userPassword);
+      // WHEN: the user creates a post and publishes it
+      //Create post
+      cy.wait(3000)
+      cy.get(btnSectionPage).first().click();
+      cy.get(btnNewPage).first().click()
+      let ran = Math.floor(Math.random() * 101)
+      let title = aPrioriData[ran].text_255
+      cy.get(titlePage).type(title)
+      cy.get(textPage).first().focus()
+      cy.wait(3000)
+  
+      //Publish post
+      cy.get(btnPublishPage).click()
+      cy.get(btnModalPublishPage).click()
+      cy.wait(1000)
+  
+      //Go back to posts list
+      cy.get(btnBackPage).eq(0).click()
+  
+      // THEN: the published post exists
+      //Verify published post
+      cy.get(listItemPage).first().should('contain', title)
+      cy.get(listItemStatusPage).first().should('contain', 'Published')
+      
+    })
+
+    //25
+    it('login, crear página, titulo con longitud de 256', () => {
+      
+      // GIVEN: a user visited 'http://localhost:2368/ghost' and login
+      login(userName,userPassword);
+      // WHEN: the user creates a post and publishes it
+      //Create post
+      cy.wait(3000)
+      cy.get(btnSectionPage).first().click();
+      cy.get(btnNewPage).first().click()
+      let ran = Math.floor(Math.random() * 101)
+      let title = aPrioriData[ran].text_256
+      cy.get(titlePage).type(title)
+      cy.get(textPage).first().focus()
+      cy.wait(3000)
+  
+      // THEN: the published post exists
+      //Verify published post
+      cy.get(btnPublishPage).should('not.exist');
+      
+    })
+
+    //26
+    it('login, crear pagina, titulo con numeros', () => {
+      
+      // GIVEN: a user visited 'http://localhost:2368/ghost' and login
+      login(userName,userPassword);
+      // WHEN: the user creates a post and publishes it
+      //Create post
+      cy.wait(3000)
+      cy.get(btnSectionPage).first().click();
+      cy.get(btnNewPage).first().click()
+      let ran = Math.floor(Math.random() * 101)
+      let title = faker.random.numeric(6)
+      cy.get(titlePage).type(title)
+      cy.get(textPage).first().focus()
+      cy.wait(3000)
+  
+      //Publish post
+      cy.get(btnPublishPage).click()
+      cy.get(btnModalPublishPage).click()
+      cy.wait(1000)
+  
+      //Go back to posts list
+      cy.get(btnBackPage).eq(0).click()
+  
+      // THEN: the published post exists
+      //Verify published post
+      cy.get(listItemPage).first().should('contain', title)
+      cy.get(listItemStatusPage).first().should('contain', 'Published')
+      
+    })
+    
+    //27
+    it('login, crear página, titulo con caracteres especiales', () => {
+      
+      // GIVEN: a user visited 'http://localhost:2368/ghost' and login
+      login(userName,userPassword);
+      // WHEN: the user creates a post and publishes it
+      //Create post
+      cy.wait(3000)
+      cy.get(btnSectionPage).first().click();
+      cy.get(btnNewPage).first().click()
+      let title = faker.datatype.string(6)
+      cy.get(titlePage).type(title)
+      cy.get(textPage).first().focus()
+      cy.wait(3000)
+  
+      //Publish post
+      cy.get(btnPublishPage).click()
+      cy.get(btnModalPublishPage).click()
+      cy.wait(1000)
+  
+      //Go back to posts list
+      cy.get(btnBackPage).eq(0).click()
+  
+      // THEN: the published post exists
+      //Verify published post
+      cy.get(listItemPage).first().should('contain', title)
+      cy.get(listItemStatusPost).first().should('contain', 'Published')
+      
+    })
+
+    //28
+    it('login, crear página, titulo con alfanumerico', () => {
+      
+      // GIVEN: a user visited 'http://localhost:2368/ghost' and login
+      login(userName,userPassword);
+      // WHEN: the user creates a post and publishes it
+      //Create post
+      cy.wait(3000)
+      cy.get(btnSectionPage).first().click();
+      cy.get(btnNewPage).first().click()
+      let ran = Math.floor(Math.random() * 101)
+      let title = faker.random.alphaNumeric(6)
+      cy.get(titlePage).type(title)
+      cy.get(textPage).first().focus()
+      cy.wait(3000)
+  
+      //Publish post
+      cy.get(btnPublishPage).click()
+      cy.get(btnModalPublishPage).click()
+      cy.wait(1000)
+  
+      //Go back to posts list
+      cy.get(btnBackPage).eq(0).click()
+  
+      // THEN: the published post exists
+      //Verify published post
+      cy.get(listItemPage).first().should('contain', title)
+      cy.get(listItemStatusPage).first().should('contain', 'Published')
+      
+    })
+
+    //29
+    it('login, crear página, descripción con numeros', () => {
+      
+      // GIVEN: a user visited 'http://localhost:2368/ghost' and login
+      login(userName,userPassword);
+      // WHEN: the user creates a post and publishes it
+      //Create post
+      cy.wait(3000)
+      cy.get(btnSectionPage).first().click();
+      cy.get(btnNewPage).first().click()
+      let description = faker.random.numeric(6)
+      cy.get(textPage).type(description)
+      cy.get(titlePage).first().focus()
+      cy.wait(3000)
+  
+      //Publish post
+      cy.get(btnPublishPage).click()
+      cy.get(btnModalPublishPage).click()
+      cy.wait(1000)
+  
+      //Go back to posts list
+      cy.get(btnBackPage).eq(0).click()
+  
+      // THEN: the published post exists
+      //Verify published post
+      cy.get(listItemPost).first().should('contain', '(Untitled)')
+      cy.get(listItemStatusPost).first().should('contain', 'Published')
+      
+    })
+    
+    //30
+    it('login, crear página, descripción con caracteres especiales', () => {
+      
+      // GIVEN: a user visited 'http://localhost:2368/ghost' and login
+      login(userName,userPassword);
+      // WHEN: the user creates a post and publishes it
+      //Create post
+      cy.wait(3000)
+      cy.get(btnSectionPage).first().click();
+      cy.get(btnNewPage).first().click()
+      let description = faker.datatype.string(6)
+      cy.get(textPage).type(description)
+      cy.get(titlePage).first().focus()
+      cy.wait(3000)
+  
+      //Publish post
+      cy.get(btnPublishPage).click()
+      cy.get(btnModalPublishPage).click()
+      cy.wait(1000)
+  
+      //Go back to posts list
+      cy.get(btnBackPage).eq(0).click()
+  
+      // THEN: the published post exists
+      //Verify published post
+      cy.get(listItemPage).first().should('contain', '(Untitled)')
+      cy.get(listItemStatusPage).first().should('contain', 'Published')
+      
+    })
+
+    //31
+    it('login, crear página, descripción con alfanumericos', () => {
+      
+      // GIVEN: a user visited 'http://localhost:2368/ghost' and login
+      login(userName,userPassword);
+      // WHEN: the user creates a post and publishes it
+      //Create post
+      cy.wait(3000)
+      cy.get(btnSectionPage).first().click();
+      cy.get(btnNewPage).first().click()
+      let description = faker.random.alphaNumeric(6)
+      cy.get(textPage).type(description)
+      cy.get(titlePage).first().focus()
+      cy.wait(3000)
+  
+      //Publish post
+      cy.get(btnPublishPage).click()
+      cy.get(btnModalPublishPage).click()
+      cy.wait(1000)
+  
+      //Go back to posts list
+      cy.get(btnBackPage).eq(0).click()
+      
+      // THEN: the published post exists
+      //Verify published post
+      cy.get(listItemPage).first().should('contain', '(Untitled)')
+      cy.get(listItemStatusPage).first().should('contain', 'Published')
+      
+    })
+
+    //32
+    it('login, members, new member, sin datos', () => {
+      // GIVEN: a user visited 'http://localhost:2368/ghost' and login
+      login(userName,userPassword);
+      // WHEN: the user creates a new member
+      cy.get(btnSectionMembers).first().click();
+      cy.get(btnNewMember).eq(0).click();
+      
+      cy.get(btnSave).click();
+      cy.wait(1000)
+  
+      //THEN: The member is displayed in the member's list
+      cy.get(btnRetry).first().should('be.visible');
+    })
+
+    //33
+    it('login, members, new member, nombre con 190 caracteres', () => {
+      // GIVEN: a user visited 'http://localhost:2368/ghost' and login
+      login(userName,userPassword);
+      // WHEN: the user creates a new member
+      mockaroo.getPseudoData( pseudoData =>{
+        cy.get(btnSectionMembers).first().click();
+        cy.get(btnNewMember).eq(0).click();
+        let ran = Math.floor(Math.random() * 101)
+        let name = pseudoData[ran].text_190
+        let email = pseudoData[ran].email
+        cy.get(inputName).type(name);
+        cy.get(memberEmail).type(email)
+        
+        cy.get(btnSave).click();
+        cy.wait(1000)
+    
+        //THEN: The member is displayed in the member's list
+        cy.get(btnSectionMembers).first().click();
+        cy.wait(2000)
+        cy.get(memberData).first().should('contain', email);
+      })
+      
+    })
+
+    //34
+    it('login, members, new member, nombre con 191 caracteres', () => {
+      // GIVEN: a user visited 'http://localhost:2368/ghost' and login
+      login(userName,userPassword);
+      // WHEN: the user creates a new member
+      mockaroo.getPseudoData( pseudoData =>{
+        cy.get(btnSectionMembers).first().click();
+        cy.get(btnNewMember).eq(0).click();
+        let ran = Math.floor(Math.random() * 101)
+        let name = pseudoData[ran].text_191
+        let email = pseudoData[ran].email
+        cy.get(inputName).type(name);
+        
+        cy.get(btnSave).click();
+        cy.wait(1000)
+    
+        //THEN: The member is displayed in the member's list
+        cy.get(btnSectionMembers).first().click();
+        cy.wait(2000)
+        cy.get(memberData).first().should('contain', email);
+      })
+      
+    })
+
+    //35
+    it('login, members, new member, nombre con 192 caracteres', () => {
+      // GIVEN: a user visited 'http://localhost:2368/ghost' and login
+      login(userName,userPassword);
+      // WHEN: the user creates a new member
+      mockaroo.getPseudoData( pseudoData =>{
+        cy.get(btnSectionMembers).first().click();
+        cy.get(btnNewMember).eq(0).click();
+        let ran = Math.floor(Math.random() * 101)
+        let name = pseudoData[ran].text_192
+        cy.get(inputName).type(name);
+        
+        cy.get(btnSave).click();
+        cy.wait(1000)
+    
+        //THEN: The member is displayed in the member's list
+        cy.get(btnRetry).first().should('be.visible');
+      })
+      
+    })
+
+    //36
+    it('login, members, new member, email invalido', () => {
+      // GIVEN: a user visited 'http://localhost:2368/ghost' and login
+      login(userName,userPassword);
+      // WHEN: the user creates a new member
+      
+      cy.get(btnSectionMembers).first().click();
+      cy.get(btnNewMember).eq(0).click();
+      cy.get(memberEmail).type(faker.datatype.string());
+      
+      cy.get(btnSave).click();
+      cy.wait(1000)
+  
+      //THEN: The member is displayed in the member's list
+      cy.get(btnRetry).first().should('be.visible');
+    })
+
+    //37
+    it('login, members, new member, verificar que este en la lista de members', () => {
+      // GIVEN: a user visited 'http://localhost:2368/ghost' and login
+      login(userName,userPassword);
+      // WHEN: the user creates a new member
+      let ran = Math.floor(Math.random() * 101)
+      let email = aPrioriData[0].email
+      createMember(email);
+  
+      //THEN: The member is displayed in the member's list
+      cy.get(btnSectionMembers).first().click();
+      cy.wait(2000)
+      cy.get(memberData).first().should('contain', email);
+    })
+
+    //38
+    it('login, members, new member, nombre con caracteres especiales', () => {
+      // GIVEN: a user visited 'http://localhost:2368/ghost' and login
+      login(userName,userPassword);
+      // WHEN: the user creates a new member
+      
+      cy.get(btnSectionMembers).first().click();
+      cy.get(btnNewMember).eq(0).click();
+      cy.get(inputName).type(faker.datatype.string());
+      let email = faker.internet.email();
+      cy.get(memberEmail).type(email);
+      
+      cy.get(btnSave).click();
+      cy.wait(1000)
+  
+      //THEN: The member is displayed in the member's list
+      cy.get(btnSectionMembers).first().click();
+      cy.wait(2000)
+      cy.get(memberData).first().should('contain', email);
+      
+    })
+
+    //39
+    it('login, members, new member, nombre con caracteres alfanumericos', () => {
+      // GIVEN: a user visited 'http://localhost:2368/ghost' and login
+      login(userName,userPassword);
+      // WHEN: the user creates a new member
+      
+      cy.get(btnSectionMembers).first().click();
+      cy.get(btnNewMember).eq(0).click();
+      cy.get(inputName).type(faker.random.alphaNumeric());
+
+      let email = faker.internet.email();
+      cy.get(memberEmail).type(email);
+      
+      cy.get(btnSave).click();
+      cy.wait(1000)
+  
+      //THEN: The member is displayed in the member's list
+      cy.get(btnSectionMembers).first().click();
+      cy.wait(2000)
+      cy.get(memberData).first().should('contain', email);
+    })
+
+    //40
+    it('login, members,miembro con correo existente', () => {
+      // GIVEN: a user visited 'http://localhost:2368/ghost' and login
+      login(userName,userPassword);
+      // WHEN: the user creates a new member
+      let ran = Math.floor(Math.random() * 101)
+      let email = aPrioriData[0].email
+      createMember(email);
+  
+      //THEN: The member is displayed in the member's list
+      cy.get(btnRetry).first().should('be.visible');
+    })
+
+    //41
+    it('login, members, new member, label con caracteres especiales', () => {
+      // GIVEN: a user visited 'http://localhost:2368/ghost' and login
+      login(userName,userPassword);
+      // WHEN: the user creates a new member
+      
+      cy.get(btnSectionMembers).first().click();
+      cy.get(btnNewMember).eq(0).click();
+      cy.get(inputLabel).type(faker.datatype.string());
+      cy.get(selectLabel).click();
+      
+      let email = faker.internet.email();
+      cy.get(memberEmail).type(email);
+
+      cy.get(btnSave).click();
+      cy.wait(1000)
+  
+      //THEN: The member is displayed in the member's list
+      cy.get(btnSectionMembers).first().click();
+      cy.wait(2000)
+      cy.get(memberData).first().should('contain', email);
+      
+    })
+
+    //42
+    it('login, members, new member, nota con caracteres especiales', () => {
+      // GIVEN: a user visited 'http://localhost:2368/ghost' and login
+      login(userName,userPassword);
+      // WHEN: the user creates a new member
+      
+      cy.get(btnSectionMembers).first().click();
+      cy.get(btnNewMember).eq(0).click();
+      cy.get(memberNote).type(faker.datatype.string());
+      let email = faker.internet.email();
+      cy.get(memberEmail).type(email);
+
+      cy.get(btnSave).click();
+      cy.wait(1000)
+  
+      //THEN: The member is displayed in the member's list
+      cy.get(btnSectionMembers).first().click();
+      cy.wait(2000)
+      cy.get(memberData).first().should('contain', email);
+      
+    })
+
+    //43
+    it('login, members, new member, nota con 499 caracteres ', () => {
+      // GIVEN: a user visited 'http://localhost:2368/ghost' and login
+      login(userName,userPassword);
+      // WHEN: the user creates a new member
+      
+      mockaroo.getPseudoData((pseudoData) =>{
+
+        cy.get(btnSectionMembers).first().click();
+        cy.get(btnNewMember).eq(0).click();
+        let ran = Math.floor(Math.random() * 101)
+        cy.get(memberEmail).type(pseudoData[ran].email);
+        cy.get(memberNote).type(pseudoData[ran].text_499);
+
+        cy.get(btnSave).click();
+        cy.wait(1000)
+    
+        //THEN: The member is displayed in the member's list
+        cy.get(btnSectionMembers).first().click();
+        cy.wait(2000)
+        cy.get(memberData).first().should('contain', pseudoData[ran].email);
+      } )
+      
+    })
+
+    //44
+    it('login, members, new member, nota con 500 caracteres especiales', () => {
+      // GIVEN: a user visited 'http://localhost:2368/ghost' and login
+      login(userName,userPassword);
+      // WHEN: the user creates a new member
+      
+      mockaroo.getPseudoData((pseudoData) =>{
+
+        cy.get(btnSectionMembers).first().click();
+        cy.get(btnNewMember).eq(0).click();
+        let ran = Math.floor(Math.random() * 101)
+        cy.get(memberEmail).type(pseudoData[ran].email);
+        cy.get(memberNote).type(pseudoData[ran].text_500);
+
+        cy.get(btnSave).click();
+        cy.wait(1000)
+    
+        //THEN: The member is displayed in the member's list
+        cy.get(btnSectionMembers).first().click();
+        cy.wait(2000)
+        cy.get(memberData).first().should('contain', pseudoData[ran].email);
+      } )
+      
+    })
+
+    //45
+    it('login, members, new member, nota con 501 caracteres especiales', () => {
+      // GIVEN: a user visited 'http://localhost:2368/ghost' and login
+      login(userName,userPassword);
+      // WHEN: the user creates a new member
+      
+      mockaroo.getPseudoData((pseudoData) =>{
+
+        cy.get(btnSectionMembers).first().click();
+        cy.get(btnNewMember).eq(0).click();
+        let ran = Math.floor(Math.random() * 101)
+        cy.get(memberEmail).type(pseudoData[ran].email);
+        cy.get(memberNote).type(pseudoData[ran].text_501);
+
+        cy.get(btnSave).click();
+        cy.wait(1000)
+    
+        //THEN: The member is displayed in the member's list
+        cy.get(btnRetry).first().should('be.visible');
+      } )
+      
+    })
+
+    //46
+    it('login, members, new member, label con espacio', () => {
+      // GIVEN: a user visited 'http://localhost:2368/ghost' and login
+      login(userName,userPassword);
+      // WHEN: the user creates a new member
+      
+      cy.get(btnSectionMembers).first().click();
+      cy.get(btnNewMember).eq(0).click();
+      let email = faker.internet.email();
+      cy.get(memberEmail).type(email)
+      cy.get(inputLabel).type(faker.lorem.words(2));
+      cy.get(selectLabel).click();
+
+      cy.get(btnSave).click();
+      cy.wait(1000)
+  
+      //THEN: The member is displayed in the member's list
+      cy.get(btnSectionMembers).first().click();
+      cy.wait(2000)
+      cy.get(memberData).first().should('contain', email);
+      
+    })
+
+    //46
+    it('login, members, new member, todos los campos validos', () => {
+      // GIVEN: a user visited 'http://localhost:2368/ghost' and login
+      login(userName,userPassword);
+      // WHEN: the user creates a new member
+      
+      cy.get(btnSectionMembers).first().click();
+      cy.get(btnNewMember).eq(0).click();
+      let ran = Math.floor(Math.random() * 101)
+      let email = aPrioriData[ran].email;
+      cy.get(memberEmail).type(email)
+      cy.get(inputLabel).type(faker.lorem.words(2));
+      cy.get(selectLabel).click();
+      cy.get(memberNote).type(aPrioriData[ran].text_190);
+      cy.get(inputName).type(aPrioriData[ran].text_190);
+      cy.get(btnSave).click();
+      cy.wait(1000)
+  
+      //THEN: The member is displayed in the member's list
+      cy.get(btnSectionMembers).first().click();
+      cy.wait(2000)
+      cy.get(memberData).first().should('contain', email);
+      
+    })  
   
   })
   
