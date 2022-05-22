@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-function getPseudoData(callback){
+async function getPseudoData(callback){
     axios.get('https://my.api.mockaroo.com/ghost_test.json?key=d1be7180')
     .then(response => {
         callback(response.data);

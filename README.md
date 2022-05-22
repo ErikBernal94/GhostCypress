@@ -26,8 +26,9 @@ Ya habiendo ejecutado la aplicación Ghost, es necesario instalar la herramienta
 * Clonar el repositorio actual en el directorio creado
 * Desde la raiz del directorio creado, abrir la terminal y ejecutar los comandos:
     - "npm install -g cypress" para instalar la herramienta en el directorio
+    - instalar otras dependencias requeridas (ej: faker), lo cual puede realizar ejecutando el comando npm install en la raíz del proyecto
     - "cypress open" para abrir la interfaz gráfica de cypress
-* Una vez en la interfaz gráfica, aparecerá 1 test "ghostTestsData.js" en la pestaña "Integration Tests". Seleccionar el test y ejecutar.
+* Una vez en la interfaz gráfica, aparecerán 3 tests "ghostTestsData-1.js, ghostTestsData-2.js, ghostTestsData-3.js" en la pestaña "Integration Tests". Seleccionar el test a ejecutar. (se dividió en 3 grupos con el fin de que la carga de correr los tests sea más liviana. Por otro lado, la aplicación ghost tiene un limite de 100 logins por hora por lo cual al correr los 120 tests juntos comenzarán a fallar en algún punto)
 
 Al ejecutar "ghostTestsData.js" comienza el proceso de implementación de cada uno de los escenarios descritos anteriormente. En el panel izquierdo de la interfaz se puede observar el proceso que se va desarrollando y el resultado de cada uno de los test que se van ejecutando.
 
