@@ -83,8 +83,8 @@ context('Actions', () => {
     const newTagBtn = '[href="#/tags/new/"]';
     const tagName = '#tag-name';
     const expandBtn = '.gh-expandable .gh-btn-expand'; // Twitter 1, Facebook 2
-    const twitterTittle = '#twitter-title';
-    const twitterDescription = '#twitter-description';
+    const twitterTittle = '[name="twitterTitle"]';
+    const twitterDescription = '[name="twitterDescription"]';
     const facebookTittle = '#og-title';
     const facebookDescription = '#og-description';
     const saveBtn = '.gh-btn.gh-btn-primary.gh-btn-icon.ember-view';
@@ -279,7 +279,9 @@ context('Actions', () => {
       cy.get(tagName).eq(0).type(tgName);
       const name = tgName;
       cy.get(expandBtn).eq(1).click();
-      cy.get(twitterTittle).type(aPrioriData[ran].text_299);
+      mockaroo.getPseudoData((data)=>{
+        cy.get(twitterTittle).type(data[ran].text_299);
+      }); 
       cy.get(saveBtn).click();
       cy.wait(1000);
   
@@ -317,7 +319,9 @@ context('Actions', () => {
       cy.get(tagName).eq(0).type(tgName);
       const name = tgName;
       cy.get(expandBtn).eq(1).click();
-      cy.get(twitterTittle).type(aPrioriData[ran].text_301);
+      mockaroo.getPseudoData((data)=>{
+        cy.get(twitterTittle).type(data[ran].text_301);
+      }); 
       cy.get(saveBtn).click();
       cy.wait(1000);
   
@@ -325,6 +329,64 @@ context('Actions', () => {
       cy.contains('Validation error, cannot save tag. Validation failed for twitter_title.');
     })
 
+    //76
+    it('login, crear tag con twitter card que tenga descripción de 499 carácteres', () => {
+      // GIVEN: a user visited 'http://localhost:2368/ghost' and login
+      // WHEN: the user creates a tag with Twitter card and the twitter tittle has 299 characters
+      login(userName, userPassword);
+      cy.get(tagNav).click();
+      cy.get(newTagBtn).click();
+      cy.get(tagName).eq(0).type(tgName);
+      const name = tgName;
+      cy.get(twitterDescription).type(aPrioriData[ran].text_499);
+      cy.get(expandBtn).eq(1).click();
+      cy.get(saveBtn).click();
+      cy.wait(1000);
+  
+      // THEN: the tag craeted exists
+      cy.get(tagNav).eq(0).click();
+      cy.get(tagsList).should('contain', name);
+    })
+
+    //77
+    it('login, crear tag con twitter card que tenga descripción de 500 carácteres', () => {
+      // GIVEN: a user visited 'http://localhost:2368/ghost' and login
+      // WHEN: the user creates a tag with Twitter card and the twitter tittle has 299 characters
+      login(userName, userPassword);
+      cy.get(tagNav).click();
+      cy.get(newTagBtn).click();
+      cy.get(tagName).eq(0).type(tgName);
+      const name = tgName;
+      mockaroo.getPseudoData((data)=>{
+        cy.get(twitterTittle).type(data[ran].text_500);
+      }); 
+      cy.get(expandBtn).eq(1).click();
+      cy.get(saveBtn).click();
+      cy.wait(1000);
+  
+      // THEN: the tag craeted exists
+      cy.get(tagNav).eq(0).click();
+      cy.get(tagsList).should('contain', name);
+    })
+
+    //78
+    it('login, crear tag con twitter card que tenga descripción de 501 carácteres', () => {
+      // GIVEN: a user visited 'http://localhost:2368/ghost' and login
+      // WHEN: the user creates a tag with Twitter card and the twitter tittle has 299 characters
+      login(userName, userPassword);
+      cy.get(tagNav).click();
+      cy.get(newTagBtn).click();
+      cy.get(tagName).eq(0).type(tgName);
+      const name = tgName;
+      cy.get(twitterDescription).type(aPrioriData[ran].text_501);
+      cy.get(expandBtn).eq(1).click();
+      cy.get(saveBtn).click();
+      cy.wait(1000);
+  
+      // THEN: the tag craeted exists
+      cy.get(tagNav).eq(0).click();
+      cy.get(tagsList).should('contain', name);
+    })
   
   })
   
