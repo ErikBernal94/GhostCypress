@@ -445,7 +445,7 @@ context('Actions', () => {
     cy.get(btnSettingsGeneral).click();
     cy.get(expandButton).eq(0).click();
 
-    cy.get(generalSettingsInput).eq(0).clear().type(aPrioriDataCharacter[ran].nameCharacteres, { force: true });
+    cy.get(generalSettingsInput).eq(0).clear().type(aPrioriDataCharacter[ran].nameCharacteres.substring(0, 150), { force: true });
     cy.get(settingsSaveButton).click();
 
     // THEN succesful saved shown
@@ -572,7 +572,6 @@ context('Actions', () => {
     cy.get(btnSettingsGeneral).click();
     cy.get(expandButton).eq(2).click();
 
-    const fakeNumber = faker.datatype.number();
     cy.get(generalSettingsInput).eq(0).clear().type(validLanguages[getRandom(validLanguages.length)], { force: true });
     cy.get(settingsSaveButton).click();
 
@@ -761,7 +760,7 @@ context('Actions', () => {
   });
 
   // 112: configuración general: título de twitter 299 caracteres
-  it('login, configuración general, título de twitter de metadata 299 caracteres', () => {
+  it('login, configuración general, título de twitter 299 caracteres', () => {
     // GIVEN: a user visited 'http://localhost:2368/ghost' and login      
     // WHEN the user updates twitter title with 299 characters
     cy.visit('http://localhost:2368/ghost');
@@ -779,7 +778,7 @@ context('Actions', () => {
   });
 
   // 113: configuración general: título de twitter 300 caracteres
-  it('login, configuración general, título de twitter de metadata 300 caracteres', () => {
+  it('login, configuración general, título de twitter 300 caracteres', () => {
     // GIVEN: a user visited 'http://localhost:2368/ghost' and login      
     // WHEN the user updates twitter title with 300 characters
     cy.visit('http://localhost:2368/ghost');
@@ -797,7 +796,7 @@ context('Actions', () => {
   });
 
   // 114: configuración general: título de twitter 301 caracteres
-  it('login, configuración general, título de twitter de metadata 301 caracteres', () => {
+  it('login, configuración general, título de twitter 301 caracteres', () => {
     // GIVEN: a user visited 'http://localhost:2368/ghost' and login      
     // WHEN the user updates twitter title with 301 characters
     cy.visit('http://localhost:2368/ghost');
@@ -815,7 +814,7 @@ context('Actions', () => {
   });
 
   // 115: configuración general: descripción de twitter 299 caracteres
-  it('login, configuración general, descripción de twitter de metadata 299 caracteres', () => {
+  it('login, configuración general, descripción de twitter 299 caracteres', () => {
     // GIVEN: a user visited 'http://localhost:2368/ghost' and login      
     // WHEN the user updates twitter description with 299 characters
     cy.visit('http://localhost:2368/ghost');
@@ -833,7 +832,7 @@ context('Actions', () => {
   });
 
   // 116: configuración general: descripción de twitter 300 caracteres
-  it('login, configuración general, descripción de twitter de metadata 300 caracteres', () => {
+  it('login, configuración general, descripción de twitter 300 caracteres', () => {
     // GIVEN: a user visited 'http://localhost:2368/ghost' and login      
     // WHEN the user updates twitter description with 300 characters
     cy.visit('http://localhost:2368/ghost');
@@ -851,7 +850,7 @@ context('Actions', () => {
   });
 
   // 117: configuración general: descripción de twitter 301 caracteres
-  it('login, configuración general, descripción de twitter de metadata 301 caracteres', () => {
+  it('login, configuración general, descripción de twitter 301 caracteres', () => {
     // GIVEN: a user visited 'http://localhost:2368/ghost' and login      
     // WHEN the user updates twitter description with 301 characters
     cy.visit('http://localhost:2368/ghost');
@@ -869,7 +868,7 @@ context('Actions', () => {
   });
 
   // 118: configuración general: título de facebook 299 caracteres
-  it('login, configuración general, título de facebook de metadata 299 caracteres', () => {
+  it('login, configuración general, título de facebook 299 caracteres', () => {
     // GIVEN: a user visited 'http://localhost:2368/ghost' and login      
     // WHEN the user updates facebook title with 299 characters
     cy.visit('http://localhost:2368/ghost');
@@ -887,7 +886,7 @@ context('Actions', () => {
   });
 
   // 119: configuración general: título de facebook 300 caracteres
-  it('login, configuración general, título de facebook de metadata 300 caracteres', () => {
+  it('login, configuración general, título de facebook 300 caracteres', () => {
     // GIVEN: a user visited 'http://localhost:2368/ghost' and login      
     // WHEN the user updates facebook title with 300 characters
     cy.visit('http://localhost:2368/ghost');
@@ -905,7 +904,7 @@ context('Actions', () => {
   });
 
   // 120: configuración general: título de facebook 301 caracteres
-  it('login, configuración general, título de facebook de metadata 301 caracteres', () => {
+  it('login, configuración general, título de facebook 301 caracteres', () => {
     // GIVEN: a user visited 'http://localhost:2368/ghost' and login      
     // WHEN the user updates facebook title with 301 characters
     cy.visit('http://localhost:2368/ghost');
@@ -923,7 +922,7 @@ context('Actions', () => {
   });
 
   // 121: configuración general: descripción de facebook 299 caracteres
-  it('login, configuración general, descripción de facebook de metadata 299 caracteres', () => {
+  it('login, configuración general, descripción de facebook 299 caracteres', () => {
     // GIVEN: a user visited 'http://localhost:2368/ghost' and login      
     // WHEN the user updates facebook description with 299 characters
     cy.visit('http://localhost:2368/ghost');
@@ -941,7 +940,7 @@ context('Actions', () => {
   });
 
   // 122: configuración general: descripción de twitter 300 caracteres
-  it('login, configuración general, descripción de twitter de metadata 300 caracteres', () => {
+  it('login, configuración general, descripción de twitter 300 caracteres', () => {
     // GIVEN: a user visited 'http://localhost:2368/ghost' and login      
     // WHEN the user updates twitter description with 300 characters
     cy.visit('http://localhost:2368/ghost');
@@ -959,7 +958,7 @@ context('Actions', () => {
   });
 
   // 123: configuración general: descripción de facebook 301 caracteres
-  it('login, configuración general, descripción de facebook de metadata 301 caracteres', () => {
+  it('login, configuración general, descripción de facebook 301 caracteres', () => {
     // GIVEN: a user visited 'http://localhost:2368/ghost' and login      
     // WHEN the user updates facebook description with 301 characters
     cy.visit('http://localhost:2368/ghost');
