@@ -35,29 +35,29 @@ Los escenarios planteados para la ejecución de las pruebas son los siguientes:
 18. Habiendo un usuario que haga login, eliminar un member existente, verificar que el member salga de la lista de members
 19. Habiendo un usuario que haga login, crear un nuevo member con un correo existente, verificar que aparece error por correo invalido
 20. Habiendo un usuario que haga login, ir a configuración del sitio y dar click en la opción "navigate",  intentar crear un navigate item sin nombre, verificar que genere error
-21. Crear Tags, con campos vacios
+21. Crear Tags, con campos vacíos
 22. Crear Tag, con caracteres especiales en el campo nombre.
 23. Crear tag con 190 caracteres en el campo nombre.
 24. Crear tag con 191 caracteres en el campo nombre.
 25. Crear tag con 192 caracteres en el campo nombre.
-26. Crear tag con nombre valido y color en formato hexagesimal.
-27. Crear tag con nombre valido y color sin formato hexagesimal.
-28. Crear tag con nombre valido y 499 caracteres en el campo descripcion.
-29. Crear tag con nombre valido y 500 caracteres en el campo descripcion.
-30. Crear tag con nombre valido y 501 caracteres en el campo descripcion.
-31. Crear tag con nombre invalido, luego editar por nombre valido y guardar.
-32. Crear tag con nombre valido y caracteres especiales en el campo descripcion.
-33. Crear tag con nombre valido y caracteres alfanumericos en el campo descripcion.
-34. Crear tag con nombre valido y en la seccion de metadata, agregar metatitulo con caracteres especiales.
-35. Crear tag con nombre valido y en la seccion de metadata, agregar metatitulo con caracteres alfanumerico.
-36. Crear tag con nombre valido y en la seccion de metadata, agregar descripcion con 499 caracteres.
-37. Crear tag con nombre valido y en la seccion de metadata, agregar descripcion con 500 caracteres.
-38. Crear tag con nombre valido y en la seccion de metadata, agregar descripcion con 501 caracteres.
-39. Crear tag con nombre valido y en la seccion de metadata, agregar url valida.
-40. Crear tag con nombre valido y en la seccion de metadata, agregar url invalida.
-41. Crear tag con nombre valido y en la seccion de metadata, agregar metatitulo con 299 caracteres.
-42. Crear tag con nombre valido y en la seccion de metadata, agregar metatitulo con 300 caracteres.
-43. Crear tag con nombre valido y en la seccion de metadata, agregar metatitulo con 301 caracteres.
+26. Crear tag con nombre válido y color en formato hexadesimal.
+27. Crear tag con nombre válido y color sin formato hexadesimal.
+28. Crear tag con nombre válido y 499 caracteres en el campo descripcion.
+29. Crear tag con nombre válido y 500 caracteres en el campo descripcion.
+30. Crear tag con nombre válido y 501 caracteres en el campo descripcion.
+31. Crear tag con nombre inválido, luego editar por nombre valido y guardar.
+32. Crear tag con nombre válido y caracteres especiales en el campo descripcion.
+33. Crear tag con nombre válido y caracteres alfanumericos en el campo descripcion.
+34. Crear tag con nombre válido y en la sección de metadata, agregar metatitulo con caracteres especiales.
+35. Crear tag con nombre válido y en la sección de metadata, agregar metatitulo con caracteres alfanumerico.
+36. Crear tag con nombre válido y en la sección de metadata, agregar descripción con 499 caracteres.
+37. Crear tag con nombre válido y en la sección de metadata, agregar descripción con 500 caracteres.
+38. Crear tag con nombre válido y en la sección de metadata, agregar descripción con 501 caracteres.
+39. Crear tag con nombre válido y en la sección de metadata, agregar url válida.
+40. Crear tag con nombre válido y en la sección de metadata, agregar url inválida.
+41. Crear tag con nombre válido y en la sección de metadata, agregar metatitulo con 299 caracteres.
+42. Crear tag con nombre válido y en la sección de metadata, agregar metatitulo con 300 caracteres.
+43. Crear tag con nombre válido y en la sección de metadata, agregar metatitulo con 301 caracteres.
 
 
 Para poder ejecutar las pruebas es necesario inicialmente instalar Ghost localmente siguiendo estos pasos:
