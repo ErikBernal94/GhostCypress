@@ -15,6 +15,8 @@ context('Actions', () => {
     cleanPages()
     createTag();
     cleanTags();
+    // createMember();
+    // cleanMembers();
     logout();
   })
 
@@ -229,11 +231,22 @@ context('Actions', () => {
     cy.wait(1000)
   }
 
+  const cleanMembers = () => {
+    cy.get(btnSectionMembers).first().click();
+    cy.get(memberData).then($item => {
+      for (let index = 0; index < $item.length ; index++) {
+        deleteMember();
+      }
+    })
+  }
+
   const deleteMember = () => {
     cy.get(memberData).first().click();
     cy.get(btnSettingMember).click();
     cy.get(btnDeleteMember).click();
+    cy.wait(3000)
     cy.get(btnModalPublishDeleteSurePost).first().click();
+    cy.wait(3000)
   }
 
   const deleteTag = (id = 0) => {
@@ -1169,7 +1182,7 @@ context('Actions', () => {
 
     cy.get(btnSectionMembers).first().click();
     cy.get(btnNewMember).eq(0).click();
-    cy.get(inputName).type(faker.datatype.string());
+    cy.get(inputName).type(faker.datatype.string(), {force: true});
     let email = faker.internet.email();
     cy.get(memberEmail).type(email);
 
@@ -1188,10 +1201,10 @@ context('Actions', () => {
     // GIVEN: a user visited 'http://localhost:2368/ghost' and login
     login(userName, userPassword);
     // WHEN: the user creates a new member
-
+    
     cy.get(btnSectionMembers).first().click();
     cy.get(btnNewMember).eq(0).click();
-    cy.get(inputName).type(faker.random.alphaNumeric());
+    cy.get(inputName).type(faker.random.alphaNumeric(), {force: true});
 
     let email = faker.internet.email();
     cy.get(memberEmail).type(email);
