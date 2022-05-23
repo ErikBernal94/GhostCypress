@@ -905,7 +905,7 @@ context('Actions', () => {
   //77
   it('login, crear tag con twitter card que tenga descripción de 499 caracteres', () => {
     // GIVEN: a user visited 'http://localhost:2368/ghost' and login
-    // WHEN: the user creates a tag with Twitter card and the twitter tittle has 299 characters
+    // WHEN: the user creates a tag with Facebook card and the facebook description has 499 characters
     login(userName, userPassword);
     cy.get(tagNav).eq(0).click();
     cy.get(newTagBtn).eq(0).click();
@@ -925,7 +925,7 @@ context('Actions', () => {
   //78
   it('login, crear tag con twitter card que tenga descripción de 500 caracteres', () => {
     // GIVEN: a user visited 'http://localhost:2368/ghost' and login
-    // WHEN: the user creates a tag with Twitter card and the twitter tittle has 299 characters
+    // WHEN: the user creates a tag with Facebook card and the facebook description has 500 characters
     login(userName, userPassword);
     cy.get(tagNav).eq(0).click();
     cy.get(newTagBtn).eq(0).click();
@@ -945,7 +945,7 @@ context('Actions', () => {
   //79
   it('login, crear tag con twitter card que tenga descripción de 501 caracteres', () => {
     // GIVEN: a user visited 'http://localhost:2368/ghost' and login
-    // WHEN: the user creates a tag with Twitter card and the twitter tittle has 299 characters
+    // WHEN: the user creates a tag with Facebook card and the facebook description has 501 characters
     login(userName, userPassword);
     cy.get(tagNav).eq(0).click();
     cy.get(newTagBtn).eq(0).click();
@@ -986,7 +986,7 @@ context('Actions', () => {
   //81
   it('login, crear tag con facebook card que tenga metatítulo de 299 caracteres', () => {
     // GIVEN: a user visited 'http://localhost:2368/ghost' and login
-    // WHEN: the user creates a tag with Twitter card and the twitter tittle has 299 characters
+    // WHEN: the user creates a tag with Facebook card and the Facebook tittle has 299 characters
     login(userName, userPassword);
     cy.get(tagNav).eq(0).click();
     cy.get(newTagBtn).eq(0).click();
@@ -1005,7 +1005,7 @@ context('Actions', () => {
   //82
   it('login, crear tag con facebook card que tenga metatítulo de 300 caracteres', () => {
     // GIVEN: a user visited 'http://localhost:2368/ghost' and login
-    // WHEN: the user creates a tag with Twitter card and the twitter tittle has 300 characters
+    // WHEN: the user creates a tag with Facebook card and the Facebook tittle has 300 characters
     login(userName, userPassword);
     cy.get(tagNav).eq(0).click();
     cy.get(newTagBtn).eq(0).click();
@@ -1024,7 +1024,7 @@ context('Actions', () => {
   //83
   it('login, crear tag con facebook card que tenga metatítulo de 301 caracteres', () => {
     // GIVEN: a user visited 'http://localhost:2368/ghost' and login
-    // WHEN: the user creates a tag with Twitter card and the twitter tittle has 301 characters
+    // WHEN: the user creates a tag with Facebook card and the Facebook tittle has 301 characters
     login(userName, userPassword);
     cy.get(tagNav).eq(0).click();
     cy.get(newTagBtn).eq(0).click();
@@ -1042,7 +1042,7 @@ context('Actions', () => {
   //84
   it('login, crear tag con facebook card que tenga descripción de 499 caracteres', () => {
     // GIVEN: a user visited 'http://localhost:2368/ghost' and login
-    // WHEN: the user creates a tag with Twitter card and the twitter tittle has 299 characters
+    // WHEN: the user creates a tag with Facebook card and the Facebook description has 499 characters
     login(userName, userPassword);
     cy.get(tagNav).eq(0).click();
     cy.get(newTagBtn).eq(0).click();

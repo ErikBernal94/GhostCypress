@@ -270,7 +270,7 @@ context('Actions', () => {
   //85
   it('login, crear tag con facebook card que tenga descripción de 500 caracteres', () => {
     // GIVEN: a user visited 'http://localhost:2368/ghost' and login
-    // WHEN: the user creates a tag with Twitter card and the twitter tittle has 299 characters
+    // WHEN: the user creates a tag with Facebook card and the facebook description has 500 characters
     login(userName, userPassword);
     cy.get(tagNav).eq(0).click();
     cy.get(newTagBtn).eq(0).click();
@@ -290,7 +290,7 @@ context('Actions', () => {
   //86
   it('login, crear tag con facebook card que tenga descripción de 501 caracteres', () => {
     // GIVEN: a user visited 'http://localhost:2368/ghost' and login
-    // WHEN: the user creates a tag with Twitter card and the twitter tittle has 299 characters
+    // WHEN: the user creates a tag with Facebook card and the facebook description has 501 characters
     login(userName, userPassword);
     cy.get(tagNav).eq(0).click();
     cy.get(newTagBtn).eq(0).click();
@@ -298,7 +298,7 @@ context('Actions', () => {
     const name = tgName;
     cy.get(expandBtn).eq(2).click();
     cy.get(facebookTittle).eq(0).type(faker.random.words(4));
-    cy.get(facebookDescription).eq(0).type(aPrioriData[0].text_501);
+    cy.get(facebookDescription).eq(0).type(mockapi[getRandom(mockapi.length)].text_501);
     cy.get(saveBtn).eq(0).click();
     cy.wait(1000);
 
