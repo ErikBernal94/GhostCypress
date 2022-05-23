@@ -6,6 +6,16 @@ import * as aPrioriDataCharacter from '../fixtures/dataCharacteres.json';
 import { mockapi, validLanguages } from '../fixtures/mockapi';
 
 context('Actions', () => {
+
+
+  module.exports = (on, config) => {
+    on('before:browser:launch', (browser, launchOptions) => {
+      if (browser.name === 'chrome' && browser.isHeadless) {
+        launchOptions.args.push('--disable-gpu');
+        return launchOptions
+      }
+    });
+  }
   before(() => {
     cy.visit('http://localhost:2368/ghost')
     login();
@@ -304,7 +314,7 @@ context('Actions', () => {
       cy.get(btnNewMember).eq(0).click();
       let ran = Math.floor(Math.random() * 101)
       cy.get(memberEmail).type(pseudoData[ran].email);
-      cy.get(memberNote).type(pseudoData[ran].text_501);
+      cy.get(memberNote).type(mockapi[getRandom(mockapi.length)].text_501, { force: true });
 
       cy.get(btnSave).click();
       cy.wait(1000)
@@ -378,7 +388,7 @@ context('Actions', () => {
   })
 
   //49
-  it('login, crear tag nombre con caracteres', () => {
+  it('Login, crear tag con caracteres especiales en el campo nombre.', () => {
     // GIVEN: a user visited 'http://localhost:2368/ghost' and login      
     //WHEN the user creates a tag
     login(userName, userPassword);
@@ -396,7 +406,7 @@ context('Actions', () => {
   })
 
   //50
-  it('login, crear tag nombre con 190 caracteres', () => {
+  it('Login, crear tag con 190 caracteres en el campo nombre.', () => {
     //GIVEN: a user visited 'http://localhost:2368/ghost' and login      
     //WHEN the user creates a tag
     login(userName, userPassword);
@@ -414,7 +424,7 @@ context('Actions', () => {
   })
 
   //51
-  it('login, crear tag nombre con 191 caracteres', () => {
+  it('Login, crear tag con 191 caracteres en el campo nombre.', () => {
     // GIVEN: a user visited 'http://localhost:2368/ghost' and login      
     //WHEN the user creates a tag
     login(userName, userPassword);
@@ -432,7 +442,7 @@ context('Actions', () => {
   })
 
   //52
-  it('login, crear tag nombre con 193 caracteres', () => {
+  it('Login, crear tag con 192 caracteres en el campo nombre.', () => {
     // GIVEN: a user visited 'http://localhost:2368/ghost' and login      
     //WHEN the user creates a tag
     login(userName, userPassword);
@@ -449,7 +459,7 @@ context('Actions', () => {
   })
 
   //53
-  it('login, crear tag color hexa', () => {
+  it('Login, crear tag con nombre valido y color en formato hexadecimal.', () => {
     // GIVEN: a user visited 'http://localhost:2368/ghost' and login      
     //WHEN the user creates a tag with color
     login(userName, userPassword);
@@ -469,7 +479,7 @@ context('Actions', () => {
   })
 
   //54
-  it('login, crear tag color sin formato', () => {
+  it('Login, crear tag con nombre válido y color sin formato hexadecimal.', () => {
     // GIVEN: a user visited 'http://localhost:2368/ghost' and login      
     //WHEN the user creates a tag with color
     login(userName, userPassword);
@@ -487,7 +497,7 @@ context('Actions', () => {
   })
 
   //55
-  it('login, crear tag descripcion longitud 499', () => {
+  it('Login, crear tag con nombre válido y 499 caracteres en el campo descripción', () => {
     // GIVEN: a user visited 'http://localhost:2368/ghost' and login      
     //WHEN the user creates a tag with description
     login(userName, userPassword);
@@ -506,7 +516,7 @@ context('Actions', () => {
   })
 
   //56
-  it('login, crear tag descripcion longitud 500', () => {
+  it('Login, crear tag con nombre válido y 500 caracteres en el campo descripción', () => {
     // GIVEN: a user visited 'http://localhost:2368/ghost' and login      
     //WHEN the user creates a tag with description
     login(userName, userPassword);
@@ -525,15 +535,14 @@ context('Actions', () => {
   })
 
   //57
-  it('login, crear tag descripcion longitud 501', () => {
+  it('Login, crear tag con nombre válido y 501 caracteres en el campo descripción', () => {
     //GIVEN: a user visited 'http://localhost:2368/ghost' and login      
     //WHEN the user creates a tag with description
     login(userName, userPassword);
     cy.get(tagNav).first().click()
     cy.get(newTagBtn).eq(0).click()
     cy.get(tagName).eq(0).type(tgName);
-    const descrip = aPrioriData[ran].text_501;
-    cy.get(descriptionTag).type(descrip);
+    cy.get(descriptionTag).type(mockapi[getRandom(mockapi.length)].text_501, { force: true });
     cy.contains('Save').first().click();
     //THEN  the tag is not created
     cy.wait(1000);
@@ -542,7 +551,7 @@ context('Actions', () => {
   })
 
   //58
-  it('login, crear tag nombre vacio y luego válido', () => {
+  it('Login, crear tag con nombre inválido, luego editar por nombre valido y guardar', () => {
     // GIVEN: a user visited 'http://localhost:2368/ghost' and login      
     //WHEN the user creates a tag
     login(userName, userPassword);
@@ -561,7 +570,7 @@ context('Actions', () => {
   })
 
   //59
-  it('login, crear tag descripción con caracteres', () => {
+  it('Login, crear tag con nombre válido y caracteres especiales en el campo descripción', () => {
     // GIVEN: a user visited 'http://localhost:2368/ghost' and login      
     //WHEN the user creates a tag with description
     login(userName, userPassword);
@@ -580,7 +589,7 @@ context('Actions', () => {
   })
 
   //60
-  it('login, crear tag descripción con string alfanumerico', () => {
+  it('Login, crear tag con nombre válido y caracteres alfanuméricos en el campo descripción', () => {
     // GIVEN: a user visited 'http://localhost:2368/ghost' and login      
     //WHEN the user creates a tag with description
     login(userName, userPassword);
@@ -615,30 +624,10 @@ context('Actions', () => {
     cy.get(tagNav).eq(0).click();
     cy.get(tagsList).should('contain', name);
     cy.wait(3000);
-  })
+  })  
 
   //62
-  it('login, crear tag con meta data, mert titulo caracteres', () => {
-    // GIVEN: a user visited 'http://localhost:2368/ghost' and login      
-    //WHEN the user creates a tag with metadata
-    login(userName, userPassword);
-    cy.get(tagNav).first().click()
-    cy.get(newTagBtn).eq(0).click();
-    cy.get(tagName).eq(0).type(tgName);
-    const name = tgName;
-    cy.get(expandBtn).eq(0).click();
-    const titleCarcteres = aPrioriDataCharacter[ran].nameCharacteres;
-    cy.get(metaTile).eq(0).type(titleCarcteres);
-    cy.contains('Save').first().click();
-    //THEN  the tag is created
-    cy.wait(1000);
-    cy.get(tagNav).eq(0).click();
-    cy.get(tagsList).should('contain', name);
-    cy.wait(3000);
-  })
-
-  //63
-  it('login, crear tag con meta data, meta titulo alfanumerico', () => {
+  it('Login, crear tag con nombre válido y en la sección de metadata, agregar meta título con caracteres alfanuméricos', () => {
     // GIVEN: a user visited 'http://localhost:2368/ghost' and login      
     //WHEN the user creates a tag with metadata
     login(userName, userPassword);
@@ -656,8 +645,8 @@ context('Actions', () => {
     cy.wait(3000);
   })
 
-  //64
-  it('login, crear tag con meta data, description 499 caracteres', () => {
+  //63
+  it('Login, crear tag con nombre válido y en la sección de metadata, agregar descripción con 499 caracteres', () => {
     // GIVEN: a user visited 'http://localhost:2368/ghost' and login      
     //WHEN the user creates a tag  with metadata
     login(userName, userPassword);
@@ -677,8 +666,8 @@ context('Actions', () => {
     cy.wait(3000);
   })
 
-  //65
-  it('login, crear tag con meta data, description 500 caracteres', () => {
+  //64
+  it('Login, crear tag con nombre válido y en la sección de metadata, agregar descripción con 500 caracteres', () => {
     // GIVEN: a user visited 'http://localhost:2368/ghost' and login      
     //WHEN the user creates a tag with metadata
     login(userName, userPassword);
@@ -698,8 +687,8 @@ context('Actions', () => {
     cy.wait(3000);
   })
 
-  //66
-  it('login, crear tag con meta data, description 501 caracteres', () => {
+  //65
+  it('Login, crear tag con nombre válido y en la sección de metadata, agregar descripción con 501 caracteres', () => {
     // GIVEN: a user visited 'http://localhost:2368/ghost' and login      
     //WHEN the user creates a tag with metadata
     login(userName, userPassword);
@@ -707,10 +696,9 @@ context('Actions', () => {
     cy.get(newTagBtn).eq(0).click();
     cy.get(tagName).eq(0).type(tgName);
     const name = tgName;
-    const descrip = aPrioriData[ran].text_501;
     cy.get(expandBtn).eq(0).click();
     cy.get(metaTile).eq(0).type(faker.datatype.string());
-    cy.get(metaDescription).eq(0).type(descrip)
+    cy.get(metaDescription).eq(0).type(mockapi[getRandom(mockapi.length)].text_501, { force: true });
     cy.contains('Save').first().click();
     //THEN  the tag is not created
     cy.wait(1000);
@@ -718,8 +706,8 @@ context('Actions', () => {
     cy.wait(3000)
   })
 
-  //67
-  it('login, crear tag con meta data, description caracteres especiales', () => {
+  //66
+  it('Login, crear tag con nombre válido y en la sección de metadata, agregar descripción con caracteres epseciales', () => {
     // GIVEN: a user visited 'http://localhost:2368/ghost' and login      
     //WHEN the user creates a tag with metadata
     login(userName, userPassword);
@@ -739,8 +727,8 @@ context('Actions', () => {
     cy.wait(3000);
   })
 
-  //68
-  it('login, crear tag con meta data, url valida', () => {
+  //67
+  it('Login, crear tag con nombre válido y en la sección de metadata, agregar url válida', () => {
     // GIVEN: a user visited 'http://localhost:2368/ghost' and login      
     //WHEN the user creates a tag with metadata
     login(userName, userPassword);
@@ -760,8 +748,8 @@ context('Actions', () => {
     cy.wait(3000);
   })
 
-  //69
-  it('login, crear tag con meta data, url valida', () => {
+  //68
+  it('Login, crear tag con nombre válido y en la sección de metadata, agregar url inválida. ', () => {
     // GIVEN: a user visited 'http://localhost:2368/ghost' and login      
     //WHEN the user creates a tag with metadata
     login(userName, userPassword);
@@ -780,8 +768,8 @@ context('Actions', () => {
     cy.wait(3000)
   })
 
-  //70
-  it('login, crear tag con meta data, url caracateres especiales', () => {
+  //69
+  it('Login, crear con nombre válido y en la sección de metadata, agregar url con caracteres especiales.', () => {
     // GIVEN: a user visited 'http://localhost:2368/ghost' and login      
     //WHEN the user creates a tag with metadata
     login(userName, userPassword);
@@ -800,7 +788,7 @@ context('Actions', () => {
   })
 
   //71
-  it('login, crear tag con meta data, meta titulo 299 caracteres', () => {
+  it('Login, crear tag con nombre válido y en la sección de metadata, agregar meta título con 299 caracteres', () => {
     // GIVEN: a user visited 'http://localhost:2368/ghost' and login      
     //WHEN the user creates a tag  with metadata
     login(userName, userPassword);
@@ -820,7 +808,7 @@ context('Actions', () => {
   })
 
   //72
-  it('login, crear tag con meta data, meta titulo 300 caracteres', () => {
+  it('Login, crear tag con nombre válido y en la sección de metadata, agregar meta título con 300 caracteres', () => {
     // GIVEN: a user visited 'http://localhost:2368/ghost' and login      
     //WHEN the user creates a tag with metadata
     login(userName, userPassword);
@@ -840,7 +828,7 @@ context('Actions', () => {
   })
 
   //73
-  it('login, crear tag con meta data, meta titulo 301 caracteres', () => {
+  it('Login, crear tag con nombre válido y en la sección de metadata, agregar meta título con 301 caracteres', () => {
     // GIVEN: a user visited 'http://localhost:2368/ghost' and login      
     //WHEN the user creates a tag with metadata
     login(userName, userPassword);
@@ -965,7 +953,7 @@ context('Actions', () => {
     const name = tgName;
     cy.get(expandBtn).eq(1).click();
     cy.get(twitterTittle).eq(0).type(faker.random.words(4));
-    cy.get(twitterDescription).eq(0).type(mockapi[getRandom(mockapi.length)].text_501);
+    cy.get(twitterDescription).eq(0).type(mockapi[getRandom(mockapi.length)].text_501, { force: true });
     cy.get(saveBtn).eq(0).click();
     cy.wait(1000);
 
