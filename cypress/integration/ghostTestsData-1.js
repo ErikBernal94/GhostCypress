@@ -279,7 +279,7 @@ context('Actions', () => {
   })
 
   //2
-  it('login, sin correo contraseña válida', () => {
+  it('login, con correo sin contraseña válida', () => {
     //GIVEN: a user visited 'http://localhost:2368/ghost'
 
     //WHEN: the user login without email value
@@ -291,7 +291,7 @@ context('Actions', () => {
   })
 
   //3
-  it('login, sin correo contraseña válida', () => {
+  it('login, sin correo con contraseña válida', () => {
     //GIVEN: a user visited 'http://localhost:2368/ghost'
 
     //WHEN: the user login without password value
@@ -328,7 +328,7 @@ context('Actions', () => {
   })
 
   //6
-  it('login, correo vállido con contraseña invalida', () => {
+  it('login, correo válido con contraseña invalida', () => {
     //GIVEN: a user visited 'http://localhost:2368/ghost'
 
     //WHEN: the user password does not match
@@ -338,7 +338,7 @@ context('Actions', () => {
   })
 
   //7
-  it('login, correo vállido con contraseña invalida', () => {
+  it('login, correo válido con contraseña valida', () => {
     //GIVEN: a user visited 'http://localhost:2368/ghost'
 
     //WHEN: the user login ok
@@ -1147,7 +1147,7 @@ context('Actions', () => {
   })
 
   //37
-  it('login, members, new member, verificar que este en la lista de members', () => {
+  it('login, members, new member, email válido', () => {
     // GIVEN: a user visited 'http://localhost:2368/ghost' and login
     login(userName, userPassword);
     // WHEN: the user creates a new member
